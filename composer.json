@@ -9,6 +9,12 @@
       "email": "dev@kurraz-soft.com"
     }
   ],
+
+  "autoload": {
+      "psr-4": {
+          "kurraz\\": "./"
+      }
+  },
   "require": {
     "yiisoft/yii2": ">=2.0"
   }
