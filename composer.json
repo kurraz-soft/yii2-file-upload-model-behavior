@@ -1,0 +1,15 @@
+{
+  "name": "kurraz/yii2-file-upload-model-behavior",
+  "description": "Simple Yii2 ActiveRecord model behavior for single file upload",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "kurraz",
+      "email": "dev@kurraz-soft.com"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "2.0.13.1"
+  }
+}
