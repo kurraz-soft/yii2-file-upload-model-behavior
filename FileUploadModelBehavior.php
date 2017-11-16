@@ -8,6 +8,7 @@ namespace kurraz\yii2_file_upload_model_behavior;
 
 
 use yii\base\Behavior;
+use yii\base\ModelEvent;
 use yii\db\ActiveRecord;
 use yii\web\UploadedFile;
 use Yii;
@@ -26,7 +27,11 @@ class FileUploadModelBehavior extends Behavior
         $this->owner->on(ActiveRecord::EVENT_BEFORE_UPDATE, array($this, 'onBeforeSave'));
     }
 
-    public function onBeforeSave()
+    /**
+     * @param ModelEvent $event
+     * @return bool
+     */
+    public function onBeforeSave($event)
     {
         if($this->owner->{$this->uploadedFileDeleteProp})
         {
@@ -41,21 +46,20 @@ class FileUploadModelBehavior extends Behavior
                 {
                     $this->delete_uploaded();
                     $this->owner->{$this->uploadedFileDbProp} = $this->upload();
-                    if(!$this->owner->{$this->uploadedFileDbProp}) $this->owner->addError('image','Can\t upload file');
+                    if(!$this->owner->{$this->uploadedFileDbProp}) $this->owner->addError($this->uploadedFileDbProp,'Can\t upload file');
                 }
                 else
                 {
-                    $this->owner->addError($this->owner->{$this->uploadedFileDbProp},$this->owner->getErrors($this->owner->{$this->uploadedFileProp})[0]);
+                    $this->owner->addError($this->uploadedFileDbProp,$this->owner->getErrors($this->uploadedFileProp)[0]);
                 }
             }else
             {
-                $this->image = $this->owner->getOldAttribute($this->owner->{$this->uploadedFileDbProp});
+                $this->owner->{$this->uploadedFileDbProp} = $this->owner->getOldAttribute($this->uploadedFileDbProp);
             }
         }
 
-        if($this->owner->hasErrors()) return false;
-
-        return true;
+        if($this->owner->hasErrors())
+            $event->isValid = false;
     }
 
     private function upload()
