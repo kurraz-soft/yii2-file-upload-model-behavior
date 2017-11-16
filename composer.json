@@ -11,9 +11,9 @@
   ],
 
   "autoload": {
-      "psr-4": {
-          "kurraz\\": "./"
-      }
+      "files": [
+        "FileUploadModelBehavior.php"
+      ]
   },
   "require": {
     "yiisoft/yii2": ">=2.0"
